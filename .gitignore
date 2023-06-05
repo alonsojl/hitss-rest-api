@@ -1,0 +1,9 @@
+.idea/
+.vscode/
+.fleet/
+.env
+cmd/hitss.exe
+cmd/hitss
+app.rsa
+app.rsa.pub
+errors.log

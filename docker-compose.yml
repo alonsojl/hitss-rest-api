@@ -1,0 +1,25 @@
+version: "3.1"
+services:
+  api:
+    container_name: GO
+    build: .
+    restart: always
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+  db:
+    container_name: MySQL
+    working_dir: /home/db
+    image: mysql:8.0
+    restart: always
+    environment:
+      - MYSQL_DATABASE=hitss
+      - MYSQL_USERNAME=root
+      - MYSQL_ROOT_PASSWORD=123456789
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./internal/db/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  

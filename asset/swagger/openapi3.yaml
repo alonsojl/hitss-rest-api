@@ -1,0 +1,278 @@
+extensionprops: {}
+openapi: 3.0.0
+components:
+    extensionprops: {}
+    schemas:
+        Dates:
+            ref: ""
+            value:
+                extensionprops: {}
+                type: object
+                properties:
+                    due:
+                        ref: ""
+                        value:
+                            extensionprops: {}
+                            type: string
+                            format: date-time
+                            nullable: true
+                    start:
+                        ref: ""
+                        value:
+                            extensionprops: {}
+                            type: string
+                            format: date-time
+                            nullable: true
+        Priority:
+            ref: ""
+            value:
+                extensionprops: {}
+                type: string
+                enum:
+                    - none
+                    - low
+                    - medium
+                    - high
+                default: none
+        Task:
+            ref: ""
+            value:
+                extensionprops: {}
+                type: object
+                properties:
+                    dates:
+                        ref: '#/components/schemas/Dates'
+                        value: null
+                    description:
+                        ref: ""
+                        value:
+                            extensionprops: {}
+                            type: string
+                    id:
+                        ref: ""
+                        value:
+                            extensionprops: {}
+                            type: string
+                            format: uuid
+                    is_done:
+                        ref: ""
+                        value:
+                            extensionprops: {}
+                            type: boolean
+                    priority:
+                        ref: '#/components/schemas/Priority'
+                        value: null
+    requestBodies:
+        CreateTasksRequest:
+            ref: ""
+            value:
+                extensionprops: {}
+                description: Request used for creating a task.
+                required: true
+                content:
+                    application/json:
+                        extensionprops: {}
+                        schema:
+                            ref: ""
+                            value:
+                                extensionprops: {}
+                                properties:
+                                    dates:
+                                        ref: '#/components/schemas/Dates'
+                                        value: null
+                                    description:
+                                        ref: ""
+                                        value:
+                                            extensionprops: {}
+                                            type: string
+                                            minLength: 1
+                                    priority:
+                                        ref: '#/components/schemas/Priority'
+                                        value: null
+        UpdateTasksRequest:
+            ref: ""
+            value:
+                extensionprops: {}
+                description: Request used for updating a task.
+                required: true
+                content:
+                    application/json:
+                        extensionprops: {}
+                        schema:
+                            ref: ""
+                            value:
+                                extensionprops: {}
+                                properties:
+                                    dates:
+                                        ref: '#/components/schemas/Dates'
+                                        value: null
+                                    description:
+                                        ref: ""
+                                        value:
+                                            extensionprops: {}
+                                            type: string
+                                            minLength: 1
+                                    is_done:
+                                        ref: ""
+                                        value:
+                                            extensionprops: {}
+                                            type: boolean
+                                            default: false
+                                    priority:
+                                        ref: '#/components/schemas/Priority'
+                                        value: null
+    responses:
+        CreateTasksResponse:
+            ref: ""
+            value:
+                extensionprops: {}
+                description: Response returned back after creating tasks.
+                content:
+                    application/json:
+                        extensionprops: {}
+                        schema:
+                            ref: ""
+                            value:
+                                extensionprops: {}
+                                properties:
+                                    task:
+                                        ref: '#/components/schemas/Task'
+                                        value: null
+        ErrorResponse:
+            ref: ""
+            value:
+                extensionprops: {}
+                description: Response when errors happen.
+                content:
+                    application/json:
+                        extensionprops: {}
+                        schema:
+                            ref: ""
+                            value:
+                                extensionprops: {}
+                                properties:
+                                    error:
+                                        ref: ""
+                                        value:
+                                            extensionprops: {}
+                                            type: string
+        ReadTasksResponse:
+            ref: ""
+            value:
+                extensionprops: {}
+                description: Response returned back after searching one task.
+                content:
+                    application/json:
+                        extensionprops: {}
+                        schema:
+                            ref: ""
+                            value:
+                                extensionprops: {}
+                                properties:
+                                    task:
+                                        ref: '#/components/schemas/Task'
+                                        value: null
+    securitySchemes:
+        bearerAuth:
+            ref: ""
+            value:
+                extensionprops: {}
+                type: http
+                scheme: bearer
+                bearerFormat: JWT
+info:
+    extensionprops: {}
+    title: Aura Air
+    description: REST APIs used for interacting with the ToDo Service
+    contact:
+        extensionprops: {}
+        url: https://github.com/MarioCarrion/todo-api-microservice-example
+    license:
+        extensionprops: {}
+        name: MIT
+        url: https://opensource.org/licenses/MIT
+    version: 0.0.0
+paths:
+    /tasks:
+        extensionprops: {}
+        post:
+            extensionprops: {}
+            operationId: CreateTask
+            requestBody:
+                ref: '#/components/requestBodies/CreateTasksRequest'
+                value: null
+            responses:
+                "201":
+                    ref: '#/components/responses/CreateTasksResponse'
+                    value: null
+                "400":
+                    ref: '#/components/responses/ErrorResponse'
+                    value: null
+                "500":
+                    ref: '#/components/responses/ErrorResponse'
+                    value: null
+    /tasks/{taskId}:
+        extensionprops: {}
+        get:
+            extensionprops: {}
+            operationId: ReadTask
+            parameters:
+                - ref: ""
+                  value:
+                    extensionprops: {}
+                    name: taskId
+                    in: path
+                    required: true
+                    schema:
+                        ref: ""
+                        value:
+                            extensionprops: {}
+                            type: string
+                            format: uuid
+            responses:
+                "200":
+                    ref: '#/components/responses/ReadTasksResponse'
+                    value: null
+                "500":
+                    ref: '#/components/responses/ErrorResponse'
+                    value: null
+        put:
+            extensionprops: {}
+            operationId: UpdateTask
+            parameters:
+                - ref: ""
+                  value:
+                    extensionprops: {}
+                    name: taskId
+                    in: path
+                    required: true
+                    schema:
+                        ref: ""
+                        value:
+                            extensionprops: {}
+                            type: string
+                            format: uuid
+            requestBody:
+                ref: '#/components/requestBodies/UpdateTasksRequest'
+                value: null
+            responses:
+                "200":
+                    ref: ""
+                    value:
+                        extensionprops: {}
+                        description: Task was updated
+                "400":
+                    ref: '#/components/responses/ErrorResponse'
+                    value: null
+                "500":
+                    ref: '#/components/responses/ErrorResponse'
+                    value: null
+security:
+    - bearerAuth: []
+servers:
+    - extensionprops: {}
+      url: http://0.0.0.0:9234
+      description: Local development
+    - extensionprops: {}
+      url: http://192.168.0.233:9234
+      description: Server development
